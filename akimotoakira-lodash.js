@@ -209,7 +209,7 @@ var akimotoakira = {
         return result;
     },
 
-    intersectionWith: function(...arg) {
+    intersectionWith: function(...arg) {//类似 _.intersection，除了它接受一个 comparator 调用每一个数组和值
         var comparator = arg.pop();
         return arg[0].filter(it => arg[1].some(comparator.bind(null,it)));
     },
@@ -247,7 +247,7 @@ var akimotoakira = {
         }
         return array;
     },
-    pullAt: function(array, indexes) {
+    pullAt: function(array, indexes) {//根据给的index数组取出对应的数组元素
         var result = [];
         for(var i = 0; i < indexes.length; i++) {
           result.push(array[indexes[i]]);
@@ -282,7 +282,7 @@ var akimotoakira = {
      * return _.bind(isMatch, null, _, source)
      * }
      */
-    isMatch: function(object, source) {
+    isMatch: function(object, source) {//深比较
         return Object.keys(source).every(a => this.isEqual(object[a], source[a]));
     },
 
@@ -374,9 +374,8 @@ var akimotoakira = {
         return array.slice(array.length - n);
     },
 
-    reject: function(collection, predicate) {
-        var f = liuyiliuyi.judge(predicate);
-        return collection.reduce((x, y) => f(y) == true ? x : x.concat(y), [])
+    reject: function(collection, predicate) {//反向排查
+        return collection.reduce((x, y) => predicate(y) == true ? x : x.concat(y), [])
     },
 
     uniq: function(array) {//重复值保留一个
@@ -401,7 +400,7 @@ var akimotoakira = {
         return result;
     },
 
-    uniqWith: function(array, comparator) {
+    uniqWith: function(array, comparator) {//类似uniq，接受一个comparator来比较计算唯一性
         var result = [];
         array.forEach(x => {
             for(var i = 0; i < result.length; i++) {
@@ -427,7 +426,7 @@ var akimotoakira = {
         return result;
     },
 
-    zipObject: function(props, values) {
+    zipObject: function(props, values) {//类似frompairs
         var obj = {}
         for(let i = 0; i < props.length; i++) {
             obj[props[i]] = values[i];
@@ -440,18 +439,18 @@ var akimotoakira = {
         return result.filter((item, index) => result.indexOf(item) === result.lastIndexOf(item));
     },
 
-    sortedIndex: function(array, value) {
+    sortedIndex: function(array, value) {//决定value应该插在哪里
         for (var i = 0; i < array.length; i++) {
             if (value > array[i]) {
                 return i + 1;
             }
         }
     },
-    sortedIndexOf: function(array, value) {
+    sortedIndexOf: function(array, value) {//类似于indexOf
         return array.indexOf(value);
     },
 
-    sortedLastIndex: function(array, value) {
+    sortedLastIndex: function(array, value) {//类似于sortedindex，返回尽可能大的数
         if(array.length == 1) {
             return 1;
         }
@@ -477,15 +476,15 @@ var akimotoakira = {
         } 
     },
 
-    sortedLastIndexOf: function(array,value) {
+    sortedLastIndexOf: function(array,value) {//类似于lastindexof
         return array.lastIndexOf(value);
     },
 
-    sortedUniq: function(array) {
+    sortedUniq: function(array) {//类似于uniq，会排序并优化数组
         return array.reduce((a, b) => a.indexOf(b) == -1 ? a.concat(b) : a, [])
     },
 
-    sortedUniqBy: function(array, iteratee) {
+    sortedUniqBy: function(array, iteratee) {//类似于uniqby，会排序并优化数组
         var new_arr = [];
         return array.filter(a => {
             if(new_arr.indexOf(iteratee(a)) == -1) {
@@ -497,7 +496,7 @@ var akimotoakira = {
         })
     },
 
-    reduce: function(collection, iteratee=_.identity, accumulator = 0) {
+    reduce: function(collection, iteratee=_.identity, accumulator = 0) {//数组方法
         var result = accumulator;
         for (var index in collection) {
             result = iteratee(result, collection[index], index);
@@ -505,7 +504,7 @@ var akimotoakira = {
         return result;
     },
 
-    reduceRight: function(collection, iteratee=_.identity, accumulator) {
+    reduceRight: function(collection, iteratee=_.identity, accumulator) {//从最后开始reduce
         var result = accumulator;
         var len = collection.length - 1;
         for (var i = len; i >= 0; i--) {
@@ -514,7 +513,7 @@ var akimotoakira = {
         return result;
     },
 
-    size: function(collection) {
+    size: function(collection) {//返回集合长度或者对象中可枚举属性的个数
         if (typeof (collection) === "object") {
             var count = 0;
             for (var val in collection) {
@@ -526,7 +525,7 @@ var akimotoakira = {
         }
     },
 
-    cloneDeep: function(value) {
+    cloneDeep: function(value) {//深复制
         var result;
         if(typeof value !== "object" || value === null) return value;
         else if (Array.isArray(value)) result = [];
@@ -537,7 +536,7 @@ var akimotoakira = {
         return result;
     },
 
-    eq: function(value, other) {
+    eq: function(value, other) {//是否相等
         if(value != value && other != other) return true;
         return value === other;
     },
@@ -550,7 +549,7 @@ var akimotoakira = {
         return value >= other;
     },
 
-    every: function(collection, predicate=_.identity) {
+    every: function(collection, predicate=_.identity) {//每一个都要符合条件
         for (var i = 0; i < this.length; i++) {
             if (!predicate.call(this[i], i, this)) {
                 return false;
@@ -559,7 +558,7 @@ var akimotoakira = {
         return true;
     },
 
-    some: function(collection, predicate=_.identity) {
+    some: function(collection, predicate=_.identity) {//有一个符合条件就行
         for (var i = 0; i < this.length; i++) {
             if (predicate.call(this[i], i, this)) {
                 return true;
@@ -568,7 +567,7 @@ var akimotoakira = {
         return false;
     },
 
-    sample: function(collection) {
+    sample: function(collection) {//从集合中随机挑一个元素
         let arr = [];
         for(key in collection) {
             arr.push(collection[key]);
@@ -681,15 +680,15 @@ var akimotoakira = {
         return this.kindOf(value) == "[object WeakSet]";
     },
 
-    lt: function lt(value, other) {
+    lt: function lt(value, other) {//小于
         return value < other;
     },
 
-    lte: function(value, other) {
+    lte: function(value, other) {小于等于
         return value <= other;
     },
 
-    toArray: function(value) {
+    toArray: function(value) {//把类数组对象转化为数组
         var arr = [];
         for(key in value) {
             arr.push(value[key])
@@ -701,7 +700,7 @@ var akimotoakira = {
         return Number(value);
     },
 
-    toPlainObject: function toPlainObject(value) {
+    toPlainObject: function toPlainObject(value) {//转化为普通对象，包括继承的可枚举属性
         var obj = {};
         for(var key in value) {
             obj[key] = value[key];
@@ -713,7 +712,7 @@ var akimotoakira = {
         return x + y;
     },
 
-    ceil: function(number, pos = 0) {
+    ceil: function(number, pos = 0) {//向上舍入
         Math.ceil(number * Math.pow(10, pos)) / Math.pow(10,pos);
     },
 
@@ -721,19 +720,19 @@ var akimotoakira = {
         dividend / divisor;
     },
 
-    floor: function(number, pos = 0) {
+    floor: function(number, pos = 0) {//向下保留
         Math.floor(number * Math.pow(10, pos)) / Math.pow(10,pos);
     },
 
-    max: function(array) {
+    max: function(array) {//求最大值，如果是空，返回undefined
         array.length == 0? undefined : Math.max.apply(null, array);
     },
 
-    mean: function mean(array) {
+    mean: function mean(array) {//求平均值
         return array.reduce((a, b) => a + b) / array.length;
     },
 
-    min: function(array) {
+    min: function(array) {//类似上面最大值
         return array.length === 0 ? undefined : Math.min(...array);
     },
 
@@ -741,7 +740,7 @@ var akimotoakira = {
         return x * y;
     },
 
-    round: function(number, pos = 0) {
+    round: function(number, pos = 0) {//四舍五入
         Math.round(number * 10 ** pos) / 10 ** pos;
     },
     
@@ -749,16 +748,16 @@ var akimotoakira = {
         minuend - subtrahend;
     },
 
-    sum: function sum(array) {
+    sum: function sum(array) {//数组求和
         return array.reduce((a, b) => a + b);
     },
 
-    clamp: function(number, lower, upper) {
+    clamp: function(number, lower, upper) {//返回限制在中间的值
         result_arr = Array.from(arguments).sort((a, b) => a - b) ;
         return result_arr[1];
     },
 
-    inRange: function(number, start, end){
+    inRange: function(number, start, end){//类似上面
         if(arguments.length == 2) {
             end = arguments[1] 
             start = 0;
@@ -770,7 +769,7 @@ var akimotoakira = {
         }
     },
 
-    assign: function(object, ...source){
+    assign: function(object, ...source){//分配可枚举属性到另一个对象上
         return source.reduce((a, b) => {
             for(key in b) {
                 if(b.hasOwnProperty(key)) {
@@ -781,7 +780,7 @@ var akimotoakira = {
         }, object)
     },
 
-    assignIn: function(object, ...source){
+    assignIn: function(object, ...source){//类似上面，它会遍历并继承来源对象的属性
         return source.reduce((a, b) => {
             for(key in b) {
                 a[key] = b[key];
@@ -790,7 +789,7 @@ var akimotoakira = {
         }, object)
     },
 
-    toPairs: function(object) {
+    toPairs: function(object) {//创建一个对象自身可枚举属性的键值对数组
         var arr = [];
         for(key in object) {
             if(object.hasOwnProperty(key)) {
@@ -800,7 +799,7 @@ var akimotoakira = {
         return arr;
     },
 
-    functions: function(object) {
+    functions: function(object) {//返回一个function对象自身可枚举属性名的数组
         var arr = [];
         for(key in object) {
             if(object.hasOwnProperty(key) && typeof object[key] == "function") {
@@ -810,7 +809,7 @@ var akimotoakira = {
         return arr;
     },
 
-    invert: function(object) {
+    invert: function(object) {//创建一个键值倒置的对象
         var arr = [];
         for(var key in object) {
             arr.push([object[key], key]);
@@ -821,12 +820,12 @@ var akimotoakira = {
         }, {})
     },
 
-    result: function(object, path, defaultvalue) {
+    result: function(object, path, defaultvalue) {//类似于get
         var value = this.get(object, path, defaultvalue);
         return this.isFunction(value) ? value.bind(this)() : value;
     },
 
-    values: function(object) {
+    values: function(object) {//创建自身可枚举属性的值为数组
         var arr = [];
         for(key in object) {
             if(object.hasOwnProperty(key)) {
@@ -836,7 +835,7 @@ var akimotoakira = {
         return arr;
     },
 
-    valuesIn: function(object) {
+    valuesIn: function(object) {//创建自身和继承的可枚举属性为数组
         var arr = [];
         for(key in object) {
             arr.push(object[key]);
@@ -844,15 +843,15 @@ var akimotoakira = {
         return arr;
     },
 
-    camelCase: function(str) {
+    camelCase: function(str) {//转换为驼峰式写法
         return str.match(/[a-zA-Z0-9]+/g).reduce((a, b, i) => i == 0 ? a + b.toLowerCase() : a + b.slice(0, 1).toUpperCase() + b.slice(1).toLowerCase(), "")
     },
 
-    capitalize: function(str) {
+    capitalize: function(str) {//首字母大写，其余小写
         return str.replace(/^(\w)(.*)/g, (m, a, b) => a.toUpperCase() + b.toLowerCase())
     },
 
-    deburr: function(str) {
+    deburr: function(str) {//转换为基本拉丁字母
         var convert = {
                     "c0": "A",
                     "c1": "A",
@@ -928,14 +927,14 @@ var akimotoakira = {
         return result.join("");
     },
 
-    endsWith: function(str, char, position) {
+    endsWith: function(str, char, position) {//检查给定的字符是否为字符串的结尾
         if (!position) {
             position = str.length;
         }
         return str[position - 1] == char ? true : false;
     },
 
-    escape: function(str){
+    escape: function(str){//转义一些特殊字符为HTML实体字符
         var re = /[&<>"']/g;
         var symbol = {
             "&": "&amp;",
@@ -947,7 +946,7 @@ var akimotoakira = {
         return str.replace(re, function(x) {return symbol[x]});
     },
 
-    escapeRegExp: function(str){
+    escapeRegExp: function(str){//转移regexp中的特殊字符
         var re = /[\^\$\.\*\+\?\(\)\[\]\{\}\|]/g;
         // var symbol = {
         //   "^": "\\^",
@@ -967,19 +966,19 @@ var akimotoakira = {
         return str.replace(re, function(x) {return "\\" + x});
     },
 
-    lowerCase: function(str) {
+    lowerCase: function(str) {//以空格分开单词并小写
         var words_arr = getWords(str);
         words_str = words_arr.join(" ");
         re = /[a-z][A-Z]/g;
         return words_str.replace(re, m => (m.slice(0,1) + " " + m.slice(1))).toLowerCase();
     },
 
-    lowerFirst: function(str) {
+    lowerFirst: function(str) {//首字母为小写
         var str_upper = str;
         return str_upper[0].toLowerCase() + str_upper.slice(1);
     },
 
-    pad: function(input_str, input_num, input_symbol) {
+    pad: function(input_str, input_num, input_symbol) {//如果字符串长度小于l则从左到右填充字符，如果没法平均分配，则截断超出的长度
         //if(!input_symbol) {input_symbol = " ";}
         if(arguments[2] == undefined) {input_symbol = " ";}
         var symbol_length = input_num - input_str.length;
@@ -991,11 +990,11 @@ var akimotoakira = {
         return symbol_left + input_str + symbol_right;
     },
 
-    parseInt: function(str) {
+    parseInt: function(str) {//转为数字
         return Number(+str).toString();
     },
 
-    repeat: function(str, times) {
+    repeat: function(str, times) {//重复N次
         var result = "";
         var str2 = str;
         for(i = 0; i < times; i++) {
@@ -1004,26 +1003,26 @@ var akimotoakira = {
         return result;
     },
 
-    split: function(str, symbol, length) {
+    split: function(str, symbol, length) {//split
         return str.split(symbol).slice(0, length);
     },
 
-    startCase: function(str) {
+    startCase: function(str) {//转化字符串为startcase
         return str.replace(/([a-z])(?=[A-Z])/g, "$1 ").replace(/[_ -]+/g, " ").replace(/\b\w/g, a =>a.toUpperCase()).trim();
     },
 
-    startsWith: function(str, target, position) {
+    startsWith: function(str, target, position) {//检查字符串是否以。。。开头
         return str.indexOf(target, position) == (position == undefined ? 0 : position) ? true: false;
     },
 
-    toLower: function(str){
+    toLower: function(str){//小写
         return str.toLowerCase();
     },
 
-    toUpper: function(str){
+    toUpper: function(str){//大写
         return str.toUpperCase();
     },
-    trim: function(str, symbol = /\s/) {
+    trim: function(str, symbol = /\s/) {//去空格
         return str.replace(new RegExp(`^[${symbol}]*|[${symbol}]*$`, "g"), "");
     },
 
@@ -1087,14 +1086,14 @@ var akimotoakira = {
     //   return input_str_arr.join("");  
     // }
 
-    trimEnd: function(str, symbol = /\s/) {
+    trimEnd: function(str, symbol = /\s/) {//只去后面的空格
         return str.replace(new RegExp(`[${symbol}]*$`, "g"), "");
     },
-    trimStart: function(str, symbol = /\s/) {
+    trimStart: function(str, symbol = /\s/) {//只去前面的空格
         return str.replace(new RegExp(`^[${symbol}]*`, "g"), "");
     },
 
-    unescape: function(str) {
+    unescape: function(str) {//反向版escape
         var entities = {
             "&amp;": "&",
             "&lt;": "<",
@@ -1107,7 +1106,7 @@ var akimotoakira = {
         return input_str.replace(re, x => entities[x]);
     },
 
-    upperCase: function(str) {
+    upperCase: function(str) {//转换字符串为空格分割的大写单词
         var words_arr = getWords(str);
         re = /[A-Z]/g;
         output = words_arr.join(" ").replace(re,m=> " " + m).toUpperCase();
@@ -1118,33 +1117,33 @@ var akimotoakira = {
         var input_str = str;
         return input_str.slice(0, 1).toUpperCase() + input_str.slice(1);
     },
-    words: function(str, pattern = /\w+/g) {
+    words: function(str, pattern = /\w+/g) {//拆分字符串中的词为数组
       return str.match(pattern);
     },
 
-    bindAll: function(object, methodNames) {
+    bindAll: function(object, methodNames) {//绑定对象的方法到对象本身，覆盖已存在的方法
         methodNames = Array.isArray(methodNames) ? methodNames : [methodNames];
         methodNames.forEach((x) => object[x] = object[x].bind(object));
         return object;
     },
 
-    conform: function(source) {
+    conforms: function(source) {//创建一个函数，会调用函数，如果都符合，返回true
         return function(arg) {
             return Object.keys(source).every((value) => source[value](arg[value]));
         }
     },
 
-    constant: function(value) {
+    constant: function(value) {//创建一个返回value的函数
         return function() {
             return value;
         }
     },
 
-    defaultTo: function(value, defaultValue) {
+    defaultTo: function(value, defaultValue) {//
         return this.isNaN(value) || value === null || value === undefined ? defaultValue : value;
     },
 
-    flow: function(func) {
+    flow: function(func) {//创建一个函数，返回的结果是调用提供函数的结果
         var that = this;
         return function(...args) {
             return func.reduce((x, y, i) => {if(i === 0) return y(...args); else return y(x)}, args);
@@ -1153,13 +1152,13 @@ var akimotoakira = {
 
     flowRight: func => (...args) => func.reduceRight((x, y, i) => i === 0 ? y(...x) : y(x), args),
 
-    method: function(path, args) {
+    method: function(path, args) {//创建一个调用给定对象path上的函数
         return function (obj) {
             return args ? this.toPath(path).reduce((x, y) => x[y], obj)() : this.toPath(path).reduce((x, y) => x[y], obj)(...args);
         }
     },
 
-    methodOf: function(object, args) {
+    methodOf: function(object, args) {//反向版method
         var self = this;
         return function (path) {
             return args ? self.toPath(path).reduce((x, y) => x[y], object)(...args) : self.toPath(path).reduce((x, y) => x[y], object)();
@@ -1173,13 +1172,13 @@ var akimotoakira = {
         return object;
     },
 
-    nthArg: function(n = 0) {
+    nthArg: function(n = 0) {//创建一个返回第n个参数的函数
         return function(...arg) {
             return arg[(n + length) % length ]
         }
     },
 
-    property: function(path) {
+    property: function(path) {//创建一个返回给定对象的path的值的函数
         path = this.toPath(path);
         return function(obj) {
             return path.reduce((x, y) => x[y], obj);
@@ -1213,7 +1212,7 @@ var akimotoakira = {
         return result;
     },
 
-    times: function(n, iteratee) {
+    times: function(n, iteratee) {//调用迭代函数n次，每次调用返回的结果存到数组中
         var result = [];
         for(var i = 0; i < n; i++){
             result.push(iteratee(i));
@@ -1221,7 +1220,7 @@ var akimotoakira = {
         return result;
     },
 
-    toPath: function(value) {
+    toPath: function(value) {//创建value为属性路径的数组
         try{
             return value.match(/[^\[\]\.]/g);
         } catch (e) {
@@ -1229,7 +1228,7 @@ var akimotoakira = {
         }
     },
 
-    uniqueId: function(prefix = "") {
+    uniqueId: function(prefix = "") {//创建唯一id
         amount ? amount++ : amount = 1;
         return prefix + amount;
     },
