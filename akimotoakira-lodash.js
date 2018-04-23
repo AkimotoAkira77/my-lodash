@@ -684,7 +684,7 @@ var akimotoakira = {
         return value < other;
     },
 
-    lte: function(value, other) {小于等于
+    lte: function(value, other) {//小于等于
         return value <= other;
     },
 
@@ -713,19 +713,19 @@ var akimotoakira = {
     },
 
     ceil: function(number, pos = 0) {//向上舍入
-        Math.ceil(number * Math.pow(10, pos)) / Math.pow(10,pos);
+        return Math.ceil(number * Math.pow(10, pos)) / Math.pow(10,pos);
     },
 
     divide: function(dividend, divisor) {
-        dividend / divisor;
+        return dividend / divisor;
     },
 
     floor: function(number, pos = 0) {//向下保留
-        Math.floor(number * Math.pow(10, pos)) / Math.pow(10,pos);
+        return Math.floor(number * Math.pow(10, pos)) / Math.pow(10,pos);
     },
 
     max: function(array) {//求最大值，如果是空，返回undefined
-        array.length == 0? undefined : Math.max.apply(null, array);
+        return array.length == 0 ? undefined : Math.max.apply(null, array);
     },
 
     mean: function mean(array) {//求平均值
@@ -741,18 +741,18 @@ var akimotoakira = {
     },
 
     round: function(number, pos = 0) {//四舍五入
-        Math.round(number * 10 ** pos) / 10 ** pos;
+        return Math.round(number * 10 ** pos) / 10 ** pos;
     },
     
     subtract: function(minuend, subtrahend) {
-        minuend - subtrahend;
+        return minuend - subtrahend;
     },
 
     sum: function sum(array) {//数组求和
         return array.reduce((a, b) => a + b);
     },
 
-    clamp: function(number, lower, upper) {//返回限制在中间的值
+    clamp: function(number, lower, upper) {//返回三个参数中间的值
         result_arr = Array.from(arguments).sort((a, b) => a - b) ;
         return result_arr[1];
     },
@@ -1174,7 +1174,7 @@ var akimotoakira = {
 
     nthArg: function(n = 0) {//创建一个返回第n个参数的函数
         return function(...arg) {
-            return arg[(n + length) % length ]
+            return arg[(n + length) % length]
         }
     },
 
